@@ -12,6 +12,7 @@ Please check the [demo](https://ai-cl5v551zv-deepakb.vercel.app/) app on vercel 
 - Choose from a range of moods such as Professional, Casual, and Creative and many more
 - Supports various social media platforms like LinkedIn, Twitter, Facebook, and Instagram
 - Support inbuilt characters limit feature for each platform
+- Dark mode feature with next-themes and tailwindcss `dark` mode
 
 ## Installation
 
