@@ -10,6 +10,7 @@ interface CreateBioProps {
 }
 
 const CreateBio = ({ platforms, vibes }: CreateBioProps) => {
+  const [error, setError] = React.useState({ mood: false, desc: false })
   const [isFetching, setIsFetching] = React.useState(false)
   const [valPlatform, setValPlatform] = React.useState<PlatformType>(platforms[0])
   const [valVibe, setValVibe] = React.useState<string | "">("")
@@ -17,6 +18,14 @@ const CreateBio = ({ platforms, vibes }: CreateBioProps) => {
   const [bio, setBio] = React.useState<string | null>("")
   const [copy, setCopy] = React.useState(false)
   const platformVibes = vibes[valPlatform]
+
+  const scrollToBottom = () => {
+    const isBrowser = () => typeof window !== "undefined"
+    if (!isBrowser()) return
+    setTimeout(() => {
+      window.scrollTo(0, document.body.scrollHeight)
+    }, 1000)
+  }
 
   const handlePlatformChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value as PlatformType
@@ -52,32 +61,40 @@ const CreateBio = ({ platforms, vibes }: CreateBioProps) => {
   }
 
   const handleSubmit = async () => {
-    setIsFetching(true)
-    const prompt = createPrompt(
-      aiPrompt,
-      valPlatform,
-      valDesc,
-      valVibe,
-      `${charLimit[valPlatform]}`,
-    )
-    await fetch("http://localhost:3000/api/generate", {
-      method: "POST",
-      mode: "cors",
-      cache: "no-cache",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      redirect: "follow",
-      referrerPolicy: "no-referrer",
-      body: JSON.stringify({ prompt }),
-    })
-      .then(result => result.json())
-      .then(response => {
-        setIsFetching(false)
-        setBio(response.text)
+    setError({ mood: valVibe === "", desc: valDesc === "" })
+
+    if (valVibe !== "" && valDesc !== "") {
+      setIsFetching(true)
+      const prompt = createPrompt(
+        aiPrompt,
+        valPlatform,
+        valDesc,
+        valVibe,
+        `${charLimit[valPlatform]}`,
+      )
+      await fetch("http://localhost:3000/api/generate", {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify({ prompt }),
       })
+        .then(result => result.json())
+        .then(response => {
+          setIsFetching(false)
+          setBio(response.text)
+          scrollToBottom()
+        })
+    }
   }
+
+  const errorMoodText = error.mood ? `text-red-600` : `text-gray-700`
+  const errorDescText = error.desc ? `text-red-600` : `text-gray-700`
 
   return (
     <section className="max-w-2xl xs:max-w-xs sm:max-w-lg md:max-w-2xl w-full flex flex-col gap-5 z-10">
@@ -107,7 +124,7 @@ const CreateBio = ({ platforms, vibes }: CreateBioProps) => {
       <div className="flex flex-col xs:flex-col sm:flex-row item-center justify-left">
         <label
           htmlFor="mood"
-          className="block text-xs font-semibold text-gray-700 w-[150px] mt-auto mb-auto md:mt-0"
+          className={`block text-xs font-semibold w-[150px] mt-auto mb-auto md:mt-0 ${errorMoodText}`}
         >
           Mood:
         </label>
@@ -129,7 +146,10 @@ const CreateBio = ({ platforms, vibes }: CreateBioProps) => {
         </div>
       </div>
       <div className="flex flex-col xs:flex-col sm:flex-row item-center justify-left">
-        <label htmlFor="message" className="block text-xs font-semibold text-gray-700 w-[150px]">
+        <label
+          htmlFor="message"
+          className={`block text-xs font-semibold w-[150px] mt-auto mb-auto md:mt-0 ${errorDescText}`}
+        >
           <span>Describe</span> <span>Yourself:</span>
         </label>
         <textarea
@@ -151,39 +171,45 @@ const CreateBio = ({ platforms, vibes }: CreateBioProps) => {
           {isFetching ? (
             <button
               type="button"
-              className="flex justify-center py-2 px-4 border border-transparent rounded-xl shadow-sm text-xs font-normal text-white bg-primary ..."
+              className="inline-block rounded bg-primary px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]"
+              data-te-ripple-init
+              data-te-ripple-color="light"
               disabled
             >
-              <svg className="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24"></svg>
-              ...Generating
+              Generating...
             </button>
           ) : (
             <button
               type="button"
-              className="flex justify-center py-2 px-4 border border-transparent rounded-xl shadow-sm text-xs font-normal text-white bg-primary hover:bg-primary-light focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+              className="inline-block rounded bg-primary px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]"
+              data-te-ripple-init
+              data-te-ripple-color="light"
               onClick={handleSubmit}
             >
-              Craft your bio &rarr;
+              Generate Bio
             </button>
           )}
           <button
             type="button"
-            className="flex justify-center py-2 px-4 border border-[#FF6E31] rounded-xl shadow-sm text-xs font-normal text-secondary dark:text-primary dark:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+            className="inline-block rounded bg-primary-light px-6 pt-2.5 pb-2 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]"
+            data-te-ripple-init
+            data-te-ripple-color="light"
             onClick={handleReset}
+            disabled={isFetching}
           >
             Reset
           </button>
         </div>
       </div>
       {bio && (
-        <div className="h-auto border border-dashed border-light px-5 pt-10 shadow-lg font-normal text-sm relative">
+        <div className="h-auto mb-4 rounded-lg border-2 border-primary shadow-xl py-5 px-6 text-base font-normal relative ">
           {copy ? (
             <div className="text-primary absolute right-10 top-2 w-[25px] h-[25px] text-xs font-normal">
               Copied
             </div>
           ) : (
             <MdOutlineContentCopy
-              className="absolute right-2 top-2 w-[25px] h-[25px] text-gray hover:text-primary cursor-pointer"
+              className="absolute right-2 top-2 w-[25px] h-[25px] text-secondary dark:text-primary hover:text-primary-light cursor-pointer"
               title="Copy Bio"
               onClick={handleCopyText}
             />

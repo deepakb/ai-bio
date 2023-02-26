@@ -15,7 +15,7 @@ const Hero = ({ platforms }: HeroProps) => {
           <BlinkText platforms={platforms} />
         </span>
       </div>
-      <h2 className="max-w-xs xs:max-w-xs sm:max-w-lg md:max-w-2xl font-normal text-primary-light dark:text-white text-sm xs:text-sm md:text-lg py-1 pb-10 text-center xs:text-left xs:w-full sm:text-center">
+      <h2 className="max-w-xs xs:max-w-xs sm:max-w-lg md:max-w-2xl font-normal text-neutral-600 dark:text-neutral-200 text-sm xs:text-sm md:text-lg py-1 pb-10 text-center xs:text-left xs:w-full sm:text-center">
         Welcome to AIBio, the smartest way to create a winning social media bio. Whether you are a
         business owner, influencer, or just want to stand out online, AIBio has the perfect bio for
         you.

@@ -64,9 +64,9 @@ const Home = () => {
         <Gradient />
         <Hero platforms={platforms} />
         <CreateBio platforms={platforms} vibes={vibes} />
-        <div className="h-[1px] w-full bg-light dark:bg-white max-w-4xl my-2" />
+        <div className="h-[1px] w-full border-t-2 border-neutral-100 dark:border-neutral-600 max-w-4xl my-2" />
         <Footer />
-        <div className="h-[1px] w-full bg-light dark:bg-white max-w-4xl my-2" />
+        <div className="h-[1px] w-full border-t-2 border-neutral-100 dark:border-neutral-600 max-w-4xl my-2" />
       </main>
     </>
   )

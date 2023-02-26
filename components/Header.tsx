@@ -8,13 +8,13 @@ const Header = () => {
   const { theme, setTheme } = useTheme()
   const isLight = theme === "light"
 
-   React.useEffect(() => {
-     setMounted(true)
-   }, [])
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
 
-   if (!mounted) {
-     return null
-   }
+  if (!mounted) {
+    return null
+  }
 
   return (
     <header className="h-[50px] max-w-4xl xs:max-w-xs sm:max-w-lg md:max-w-2xl lg:max-w-4xl py-10 w-full flex flex-row gap-2 justify-center items-center">
