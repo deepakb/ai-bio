@@ -4,6 +4,8 @@ AIBio is a social media bio generator that uses OpenAI's GPT-3 API to generate p
 
 ![image](https://user-images.githubusercontent.com/1321311/221399259-9f97f83e-0c13-45e6-b226-4a7a38e4264b.png)
 
+Please check the [demo](https://ai-cl5v551zv-deepakb.vercel.app/) app on vercel platform
+
 ## Features
 
 - Generate custom social media bios based on user-provided information and preferred vibe
