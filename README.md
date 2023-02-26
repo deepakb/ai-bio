@@ -2,7 +2,7 @@
 
 AIBio is a social media bio generator that uses OpenAI's GPT-3 API to generate professional and catchy bios for various social media platforms like LinkedIn, Twitter, Facebook, and Instagram. The project is built using Next.js and Tailwind CSS.
 
-![image](https://user-images.githubusercontent.com/1321311/221399259-9f97f83e-0c13-45e6-b226-4a7a38e4264b.png)
+![image](https://user-images.githubusercontent.com/1321311/221409620-f17350ae-9afc-4d67-a6aa-59f7b6d02202.png)
 
 Please check the [demo](https://ai-cl5v551zv-deepakb.vercel.app/) app on vercel platform
 
@@ -27,7 +27,7 @@ To run AIBio on your local machine, follow these steps:
 
 ## Usage
 
-To use AIBio, simply enter your information and preferred mood on the website's homepage, select the social media platform you want to generate a bio for, and click on the "Craft your bio" button. The generated bio will appear on the screen, and you can copy and paste it into your social media profile.
+To use AIBio, simply enter your information and preferred mood on the website's homepage, select the social media platform you want to generate a bio for, and click on the "Generate Bio" button. The generated bio will appear on the screen, and you can copy and paste it into your social media profile.
 
 
 ## Credits
