@@ -72,7 +72,7 @@ const CreateBio = ({ platforms, vibes }: CreateBioProps) => {
         valVibe,
         `${charLimit[valPlatform]}`,
       )
-      await fetch("http://localhost:3000/api/generate", {
+      await fetch(`/api/generate`, {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
